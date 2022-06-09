@@ -1,0 +1,122 @@
+#INIT****************************** SwipeButton **********************************
+
+<SwipeButton>:# Botón para mostrar y ocultar el listado de criptomonedas
+    size_hint: None, None
+    height: "10dp"
+    width: "120dp"
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    background_color: 0,0,0,0
+    canvas.before:
+        Color:
+            rgb: .7,.7,.7,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.width, self.height / 2
+            radius: [3]
+
+#END******************************* SwipeButton **********************************
+
+
+
+#INIT**************************** RoundedBoxLayout *******************************
+
+<RoundedBoxLayout>:# BoxLayout con la posibilidad de redondear las orillas
+    size_hint_y: None
+    height: "370dp"
+    id: crypto_layout
+    bg_color: 0,0,0,0
+    radius: [5]
+    spacing: "10dp"
+    canvas.before:
+        Color:
+            rgb: root.bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+    
+    SwipeButton:
+
+#END***************************** RoundedBoxLayout *******************************
+
+
+
+#INIT***************************** CryptoItemList ********************************
+
+<CryptoItemList>:# Item para el listado de criptomonedas 
+    orientation: 'vertical'
+    name: ''
+    price: ''
+    changePercent: ''
+    size_hint: 1, None
+    height: "50dp"
+    source: ''
+    changePercentColor: 1,1,1,1
+
+    MDGridLayout:
+        cols: 4
+        padding: "15dp"
+
+        AsyncImage: # Imagen de la criptomoneda
+            source: root.source
+            size_hint: None, 1
+            width: "50dp"
+        
+        MDLabel: # Nombre de la criptomoneda
+            text: root.name
+            bold: True
+            halign: 'left'
+
+        MDLabel: # Precio en dolares de la criptomoneda
+            text: root.price
+            halign: 'right'
+
+        MDLabel: # Porcentaje de cambio
+            text: root.changePercent
+            halign: 'right'
+            theme_text_color: 'Custom'
+            text_color: root.changePercentColor
+
+    MDSeparator: # Linea separadora entre item e item
+
+#END****************************** CryptoItemList ********************************
+
+
+
+#INIT******************************* HomeScreen **********************************
+
+<HomeScreen>:
+    md_bg_color: app.bg_color
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDRelativeLayout: # Primera parte de la pantalla
+            size_hint_y: None
+            height: "200dp"
+            pos_hint: {'center_x': 0.5,'y': 1}
+
+            MDLabel:
+                text: "Crypto Wallet"
+                theme_text_color: "Custom"
+                text_color: app.text_color
+                bold: True
+                font_size: "28sp"
+                size_hint: None, None
+                -text_size: None, None
+                size: self.texture_size
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+
+        RoundedBoxLayout: # Segunda parte de la pantalla
+            orientation: 'vertical'
+            bg_color: 1,1,1,1
+            radius: [40,40,0,0]
+            padding: (0, '20dp')
+        
+            ScrollView:
+                MDList: # Lista para colocar las criptos
+                    id: crypto_list
+                    # Los items de la lista serán cargados dinamicamente desde home.py           
+
+#END******************************** HomeScreen **********************************
